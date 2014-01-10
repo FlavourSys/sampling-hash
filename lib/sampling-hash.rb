@@ -3,7 +3,7 @@ require 'sampling-hash/version'
 require 'xxhash'
 
 module SamplingHash
-  def self.hash(path, seed)
+  def self.hash(path, seed = File.size(path))
     raise ArgumentError, 'file not found' unless File.file?(path)
 
     hash = XXhash::Internal::StreamingHash.new(seed)

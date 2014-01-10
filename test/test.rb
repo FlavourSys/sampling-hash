@@ -11,6 +11,12 @@ describe 'SamplingHash' do
       end
     end
 
+    it 'uses the file size as default seed' do
+      h1 = SamplingHash.hash(__FILE__)
+      h2 = SamplingHash.hash(__FILE__, File.size(__FILE__))
+      assert_equal h1, h2
+    end
+
     it 'calculates the correct xxhash for a small file' do
       h1 = XXhash.xxh32(File.read(__FILE__), 123)
       h2 = SamplingHash.hash(__FILE__, 123)
