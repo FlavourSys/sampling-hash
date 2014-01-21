@@ -30,4 +30,17 @@ describe 'SamplingHash' do
       end
     end
   end
+
+  describe 'Sampler' do
+    it 'works' do
+      s = SamplingHash::Sampler.new(1000000000, 1000, 0, 1000, 0.001)
+
+      # Size is 1 billion, sample_size is 1000, 1000 samples minimum
+      # equals 1 million minimum sampling size, of the remaining 999 million
+      # we want 1 one-tenth of a percent, so 999000 (total sampling size)
+      # in 1000 + (999000 / 1000) = 1999 samples.
+      assert_equal s.size, 1999000
+      assert_equal s.samples.size, 1999
+    end
+  end
 end

@@ -1,3 +1,4 @@
+require 'sampling-hash/sampler'
 require 'sampling-hash/sampling-io'
 require 'sampling-hash/version'
 require 'xxhash'
@@ -9,7 +10,7 @@ module SamplingHash
     hash = XXhash::Internal::StreamingHash.new(seed)
     sio = SamplingIO.new(File.open(path, 'r'))
 
-    while chunk = sio.sample
+    sio.samples do |chunk|
       hash.update(chunk)
     end
 
