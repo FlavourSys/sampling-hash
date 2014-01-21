@@ -1,3 +1,4 @@
+require 'sampling-hash/hash'
 require 'sampling-hash/sampler'
 require 'sampling-hash/sampling-io'
 require 'sampling-hash/version'
@@ -8,8 +9,8 @@ module SamplingHash
     raise ArgumentError, 'file not found' unless File.file?(path)
 
     hash = XXhash::Internal::StreamingHash.new(seed)
-    sio = SamplingIO.new(File.open(path, 'r'))
 
+    sio = SamplingIO.new(File.open(path, 'r'))
     sio.samples do |chunk|
       hash.update(chunk)
     end

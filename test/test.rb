@@ -2,6 +2,7 @@ require 'minitest/autorun'
 require 'minitest/spec'
 require 'tempfile'
 require 'sampling-hash'
+require 'securerandom'
 
 describe 'SamplingHash' do
   describe 'hash' do
@@ -41,6 +42,38 @@ describe 'SamplingHash' do
       # in 1000 + (999000 / 1000) = 1999 samples.
       assert_equal s.size, 1999000
       assert_equal s.samples.size, 1999
+    end
+  end
+
+  describe 'Hash' do
+    it 'works' do
+      # I want 1024 Bytes of data and 4 byte sample_size.
+      data = SecureRandom.random_bytes(1000)
+      sampler = SamplingHash::Sampler.new(1000, 4, 0, 0, 0.1)
+
+      # Expecting 25 samples a 4 byte size = 100 bytes sample data.
+      assert_equal sampler.samples.size, 25
+      assert_equal sampler.size, 100
+
+      # Sample words are distributed equally over the test data.
+      # The gap size will be (1000 - 100) / 25 = 36.
+      # Calculate the hash ourselves.
+      h1 = XXhash::Internal::StreamingHash.new(123)
+      25.times { |i| h1.update(data[(i * 40)..(i * 40 + 3)]) }
+
+      # Now use the Hash class.
+      h2 = SamplingHash::Hash.new(1000, 123, sampler)
+
+      # We randomly put in 1-50 bytes.
+      offset = 0
+      while offset < 1000
+        chunk = Random.rand(50) + 1
+        chunk = [chunk, 1000 - offset].min
+        h2.update(data[offset..(offset + chunk - 1)])
+        offset += chunk
+      end
+
+      assert_equal h1.digest, h2.digest
     end
   end
 end

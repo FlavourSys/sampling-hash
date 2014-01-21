@@ -35,7 +35,7 @@ module SamplingHash
         remaining_total_sampling_size      = remaining_minimum_sampling_size + remaining_additional_sampling_size
 
         remaining_unsampled_size           = remaining_size - remaining_total_sampling_size
-        remaining_sampling_gap             = (remaining_unsampled_size / (remaining_total_samples - 1)).truncate
+        remaining_sampling_gap             = (remaining_unsampled_size / remaining_total_samples).truncate
 
         # NOTE: We can not overflow since we calculated the remaining_additional_samples with integer division.
         remaining_total_samples.times do |i|
