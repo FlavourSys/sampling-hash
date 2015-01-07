@@ -10,11 +10,15 @@ module SamplingHash
 
     hash = XXhash::Internal::StreamingHash.new(seed)
 
-    sio = SamplingIO.new(File.open(path, 'r'))
-    sio.samples do |chunk|
-      hash.update(chunk)
-    end
+    File.open(path, 'r') do |fd|
 
-    hash.digest
+      sio = SamplingIO.new(fd)
+      sio.samples do |chunk|
+        hash.update(chunk)
+      end
+
+      hash.digest
+
+    end
   end
 end
