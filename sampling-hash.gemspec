@@ -14,7 +14,7 @@ Gem::Specification.new do |gem|
   gem.files         = Dir.glob('lib/**/*.rb')
   gem.require_paths = ['lib']
 
-  gem.add_dependency 'xxhash', '>= 0.2.0'
+  gem.add_dependency 'xxhash', '~> 0.3'
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'minitest'
 end

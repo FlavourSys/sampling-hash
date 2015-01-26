@@ -19,7 +19,7 @@ describe 'SamplingHash' do
     end
 
     it 'calculates the correct xxhash for a small file' do
-      h1 = XXhash.xxh32(File.read(__FILE__), 123)
+      h1 = XXhash.xxh64(File.read(__FILE__), 123)
       h2 = SamplingHash.hash(__FILE__, 123)
       assert_equal h1, h2
     end
@@ -58,7 +58,7 @@ describe 'SamplingHash' do
       # Sample words are distributed equally over the test data.
       # The gap size will be (1000 - 100) / 25 = 36.
       # Calculate the hash ourselves.
-      h1 = XXhash::Internal::StreamingHash.new(123)
+      h1 = XXhash::XXhashInternal::StreamingHash64.new(123)
       25.times { |i| h1.update(data[(i * 40)..(i * 40 + 3)]) }
 
       # Now use the Hash class.

@@ -5,10 +5,9 @@ require 'sampling-hash/version'
 require 'xxhash'
 
 module SamplingHash
-  def self.hash(path, seed = File.size(path))
+  # We default to 64 bit xxhash.
+  def self.hash(path, seed = File.size(path), hash = XXhash::XXhashInternal::StreamingHash64.new(seed))
     raise ArgumentError, 'file not found' unless File.file?(path)
-
-    hash = XXhash::Internal::StreamingHash.new(seed)
 
     File.open(path, 'r') do |fd|
 
@@ -20,5 +19,13 @@ module SamplingHash
       hash.digest
 
     end
+  end
+
+  def self.hash32(path, seed = File.size(path))
+    hash path, seed, XXHash::XXhashInternal::StreamingHash32.new(seed)
+  end
+
+  def self.hash64(path, seed = File.size(path))
+    hash path, seed, XXHash::XXhashInternal::StreamingHash64.new(seed)
   end
 end
