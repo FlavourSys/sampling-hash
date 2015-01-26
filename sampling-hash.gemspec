@@ -15,6 +15,6 @@ Gem::Specification.new do |gem|
   gem.require_paths = ['lib']
 
   gem.add_dependency 'xxhash', '~> 0.3'
-  gem.add_development_dependency 'rake'
-  gem.add_development_dependency 'minitest'
+  gem.add_development_dependency 'rake', '~> 10.4'
+  gem.add_development_dependency 'minitest', '~> 5.5'
 end
