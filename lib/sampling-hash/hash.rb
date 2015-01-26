@@ -1,8 +1,8 @@
 module SamplingHash
   class Hash
-    def initialize(size, seed = size, sampler = nil)
+    def initialize(size, seed = size, sampler = nil, xxhash = XXhash::XXhashInternal::StreamingHash64.new(seed))
       @sampler = sampler || Sampler.new(size)
-      @xxhash = XXhash::Internal::StreamingHash.new(seed)
+      @xxhash = xxhash
       
       # Position in data stream.
       @position = 0
