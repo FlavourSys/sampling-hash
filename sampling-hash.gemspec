@@ -5,6 +5,7 @@ require 'sampling-hash/version'
 Gem::Specification.new do |gem|
   gem.name          = "sampling-hash"
   gem.version       = SamplingHash::VERSION
+  gem.license       = 'MIT'
   gem.authors       = ['FlavourSys Technology GmbH']
   gem.email         = ['technology@flavoursys.com']
   gem.description   = %q{Calculates deterministic hashes from file samples}
